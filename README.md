@@ -1,2 +1,2 @@
 # Concessionaria_Virtual
-Projetoruby
+Projeto ruby com conceitos de orientação a objeto para estudo
