@@ -6,12 +6,12 @@ class Relatorio
   def total
     soma = 0.0
   
-    @loja.carros.map(&:preco).inject(:+)
+    @loja.veiculos.map(&:preco).inject(:+)
   end
   
   def marcas
     marcas = []
   
-    @loja.carros.map &:marca
+    @loja.veiculos.map &:marca
   end
 end
