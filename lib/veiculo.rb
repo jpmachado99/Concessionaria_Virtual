@@ -14,7 +14,6 @@ class Veiculo
     def desconto
       @valor * desconto
     end
-<<<<<<< HEAD:lib/veiculos.rb
 
     module FormatadorMoeda
       def valor_formatado
@@ -22,6 +21,3 @@ class Veiculo
       end
     end
 end
-=======
-end
->>>>>>> 2ba55b2a2402043d50189b454c2e5b81de90a7ff:lib/veiculo.rb
