@@ -11,7 +11,7 @@ class Carro < Veiculo
   end
   def to_s
     %Q{CARRO -> Modelo: #{@modelo}, Cor: #{@cor}, Ano: #{@ano}, 
-     Preco: #{@preco}, Categoria: #{@categoria}\n}
+     Preco: R$#{@preco}, Categoria: #{@categoria}\n}
   end
     
   def eql?(outro_carro)

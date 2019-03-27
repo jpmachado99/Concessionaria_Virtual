@@ -14,4 +14,10 @@ class Veiculo
     def desconto
       @valor * desconto
     end
+
+    module FormatadorMoeda
+      def valor_formatado
+        "R$ #{@preco}"
+      end
+    end
 end

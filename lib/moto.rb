@@ -11,7 +11,7 @@ class Moto < Veiculo
   end
 
   def to_s
-    %Q{MOTO -> Marca: #{@marca}, Modelo: #{@modelo}, Preço: #{@preco}, Categoria: #{@categoria} }
+    %Q{MOTO -> Marca: #{@marca}, Modelo: #{@modelo}, Preço: R$#{@preco}, Categoria: #{@categoria} }
   end
   
   def hash

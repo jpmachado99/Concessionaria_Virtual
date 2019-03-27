@@ -1,20 +1,31 @@
-class Loja
-  def initialize
-    @veiculos = {}
-  end
+module VendaFacil
+  class Set
+    def initialize
+      @arquivos = BancoDeArquivos.new 
+    end
+      
+    def adiciona(veiculo)
+      salva veiculo do
+        veiculos << veiculo
+      end
+    end
+      
+    def veiculos
+      @veiculos ||= @arquivos.carrega
+    end
+      
+    def veiculos_por_categoria(categoria)
+      veiculos.select {|veiculo| veiculo.categoria == categoria}
+    end
+
+		def each
+			veiculos.each{|veiculo| yield veiculo}
+		end
     
-  def adiciona(veiculo)
-    @veiculos[veiculo.categoria] ||= []
-    @veiculos[veiculo.categoria] << veiculo
-  end
-    
-  def veiculos
-    @veiculos.values.flatten
-  end
-    
-  def veiculos_por_categoria(categoria)
-    @veiculos[categoria].each do |veiculo|
-      yield veiculo if block_given?
+    private
+    def salva(veiculo)
+      @arquivos.salva veiculo
+      yield
     end
   end
 end

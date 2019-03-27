@@ -62,25 +62,61 @@ class Moto < Veiculo
     end
 end
 
-class Loja
+class Bike < Veiculo
+  def initialize(modelo, cor, preco, categoria)
+    super()
+    @modelo = modelo
+    @cor = cor
+    @preco = preco
+    @categoria = categoria
+  end
+
+  def to_s
+    %Q{BIKE -> Modelo: #{@modelo}, Cor: #{@cor}, Preco: R$#{@preco}, Categoria: #{@categoria}}
+  end
+end
+
+class BancoDeArquivos
+	def salva(livro)
+		File.open("livros.yml", "a") do |arquivo|
+			arquivo.puts YAML.dump(livro)
+			arquivo.puts ""
+		end
+	end
+	def carrega
+		$/ = "\n\n"
+		File.open("livros.yml", "r").map do |livro_serializado|
+			YAML.load livro_serializado
+		end
+	end
+end
+
+module VendaFacil
+  class Set
     def initialize
-      @veiculos = {}
+      @arquivos = BancoDeArquivos.new 
     end
       
     def adiciona(veiculo)
-      @veiculos[veiculo.categoria] ||= []
-      @veiculos[veiculo.categoria] << veiculo
+      salva veiculo do
+        veiculos << veiculo
+      end
     end
       
     def veiculos
-      @veiculos.values.flatten
+      @veiculos ||= @arquivos.carrega
     end
       
     def veiculos_por_categoria(categoria)
-      @veiculos[categoria].each do |veiculo|
-        yield veiculo if block_given?
-      end
+      veiculos.select {|veiculo| veiculo.categoria == categoria}
     end
+    
+    private
+    def salva(veiculo)
+      @arquivos.salva veiculo
+      yield
+    end
+  end
 end
 
 class Relatorio
@@ -102,13 +138,17 @@ class Relatorio
 end
 
 loja = Loja.new
+rel = Relatorio.new loja
 
-tempra = Carro.new("1", "Fiat", "Tempra", "Azul", 2002, 10000.0, :hatch)
+tempra = Carro.new("1", "Fiat", "Tempra", "Azul", 2002, 5000.0, :hatch)
 amarok = Carro.new("2", "Volks", "Amarok", "Cinza", 2018, 90000.0, :suv)
 loja.adiciona(tempra)
 loja.adiciona(amarok)
 
-hornet = Moto.new("1", "Honda", "Hornet", "Fúscia", 2017, 30000.0, :sport)
+hornet = Moto.new("1", "Honda", "Hornet", "Fuscia", 2017, 30000.0, :sport)
 loja.adiciona(hornet)
+
+caloi100 = Bike.new("1", "Caloi 100", "Cinza", 500.0, :urbana)
+loja.adiciona(caloi100)
 
 puts loja.veiculos
