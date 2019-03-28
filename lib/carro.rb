@@ -1,4 +1,8 @@
 class Carro < Veiculo
+	# todos os métodos de instância são
+	# incluídos nos objetos Livro
+	
+	include FormatadorMoeda
   def initialize(id, marca, modelo, cor, ano, preco, categoria)
     super()
     @id = id
@@ -10,8 +14,7 @@ class Carro < Veiculo
     @categoria = categoria
   end
   def to_s
-    %Q{CARRO -> Modelo: #{@modelo}, Cor: #{@cor}, Ano: #{@ano}, 
-     Preco: R$#{@preco}, Categoria: #{@categoria}\n}
+    %Q{CARRO -> Modelo: #{@modelo}, Cor: #{@cor}, Ano: #{@ano}, Preco: #{@preco}, Categoria: #{@categoria}\n}
   end
     
   def eql?(outro_carro)

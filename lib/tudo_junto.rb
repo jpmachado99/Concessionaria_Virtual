@@ -1,19 +1,25 @@
 class Veiculo
-    attr_accessor :preco
-    attr_reader :categoria, :modelo
+  attr_accessor :preco
+  attr_reader :categoria, :modelo
+  
+  def initialize
+    @desconto = 0.1
+  end
+  
+  def valor_com_desconto
+    @preco - desconto
+  end
     
-    def initialize
-      @desconto = 0.1
+  private
+  def desconto
+    @valor * desconto
+  end
+
+  module FormatadorMoeda
+    def valor_formatado
+      "R$ #{@preco}"
     end
-    
-    def valor_com_desconto
-      @preco - desconto
-    end
-    
-    private
-    def desconto
-      @valor * desconto
-    end
+  end
 end
 
 class Carro < Veiculo
@@ -76,16 +82,17 @@ class Bike < Veiculo
   end
 end
 
+require "yaml"
 class BancoDeArquivos
-	def salva(livro)
-		File.open("livros.yml", "a") do |arquivo|
-			arquivo.puts YAML.dump(livro)
+	def salva(veiculo)
+		File.open("veiculos.yml", "a") do |arquivo|
+			arquivo.puts YAML.dump(veiculo)
 			arquivo.puts ""
 		end
 	end
 	def carrega
 		$/ = "\n\n"
-		File.open("livros.yml", "r").map do |livro_serializado|
+		File.open("veiculos.yml", "r").map do |livro_serializado|
 			YAML.load livro_serializado
 		end
 	end
@@ -120,35 +127,27 @@ module VendaFacil
 end
 
 class Relatorio
-    def initialize(loja)
-      @loja = loja
-    end
+  def initialize(loja)
+    @loja = loja
+  end
     
-    def total
-      soma = 0.0
+  def total
+    soma = 0.0
+  
+    @loja.veiculos.map(&:preco).inject(:+)
+  end
     
-      @loja.veiculos.map(&:preco).inject(:+)
-    end
-    
-    def marcas
-      marcas = []
-    
-      @loja.veiculos.map &:marca
-    end
+  def marcas
+    marcas = []
+   
+    @loja.veiculos.map &:marca
+  end
 end
 
-loja = Loja.new
-rel = Relatorio.new loja
+loja = VendaFacil::Set.new
 
-tempra = Carro.new("1", "Fiat", "Tempra", "Azul", 2002, 5000.0, :hatch)
-amarok = Carro.new("2", "Volks", "Amarok", "Cinza", 2018, 90000.0, :suv)
-loja.adiciona(tempra)
-loja.adiciona(amarok)
+loja.adiciona Carro.new("1", "Fiat", "Tempra", "Azul", 2002, 5000, :hatch)
+loja.adiciona Moto.new("1", "Honda", "Hornet", "Fuscia", 2017, 30000, :sport)
+loja.adiciona Bike.new("1", "Caloi 100", "Cinza", 500, :urbana)
 
-hornet = Moto.new("1", "Honda", "Hornet", "Fuscia", 2017, 30000.0, :sport)
-loja.adiciona(hornet)
-
-caloi100 = Bike.new("1", "Caloi 100", "Cinza", 500.0, :urbana)
-loja.adiciona(caloi100)
-
-puts loja.veiculos
+puts loja.inject(0) {|tot, veiculo| tot += veiculo.preco}

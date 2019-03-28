@@ -1,13 +1,16 @@
 module VendaFacil
   class Set
+		include Enumerable
+
     def initialize
+			@veiculos = ::Array.new
       @arquivos = BancoDeArquivos.new 
     end
       
     def adiciona(veiculo)
-      salva veiculo do
+      salva(veiculo) do
         veiculos << veiculo
-      end
+      end if veiculo.kind_of? Veiculo # O método kind_of? retorna true se o objeto for um tipo ou subtipo da constante passado como argumento (A superclasse Veiculo)
     end
       
     def veiculos
