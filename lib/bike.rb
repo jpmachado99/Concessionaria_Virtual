@@ -1,6 +1,7 @@
 class Bike < Veiculo
+	extend FormatadorMoeda
   def initialize(id, modelo, cor, preco, categoria)
-		super()
+    super()
 		@id = id
     @modelo = modelo
     @cor = cor

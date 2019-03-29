@@ -1,8 +1,8 @@
 class Carro < Veiculo
 	# todos os métodos de instância são
-	# incluídos nos objetos Livro
-	
-	include FormatadorMoeda
+	# incluídos nos objetos Carro
+
+	extend FormatadorMoeda
   def initialize(id, marca, modelo, cor, ano, preco, categoria)
     super()
     @id = id

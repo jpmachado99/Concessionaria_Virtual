@@ -1,76 +1,88 @@
 class Veiculo
   attr_accessor :preco
   attr_reader :categoria, :modelo
-  
+    
   def initialize
     @desconto = 0.1
   end
-  
-  def valor_com_desconto
+    
+  def preco_com_desconto
     @preco - desconto
   end
     
   private
   def desconto
-    @valor * desconto
+    @preco * @desconto
   end
 
-  module FormatadorMoeda
-    def valor_formatado
-      "R$ #{@preco}"
-    end
-  end
+	module FormatadorMoeda
+  	def self.formata_moeda(*vars_met)
+    	vars_met.each do |name|
+      	define_method("#{name}_formatado") do
+        	preco = respond_to?(name) ? send(name) : instance_variable_get("@#{name}")
+        	"R$ #{preco}"
+      	end
+    	end
+  	end
+	end
+	
 end
 
 class Carro < Veiculo
-    def initialize(id, marca, modelo, cor, ano, preco, categoria)
-      super()
-      @id = id
-      @marca = marca
-      @modelo = modelo
-      @cor = cor
-      @ano = ano
-      @preco = preco
-      @categoria = categoria
-    end
-    def to_s
-      %Q{CARRO -> Modelo: #{@modelo}, Cor: #{@cor}, Ano: #{@ano}, 
-       Preco: #{@preco}, Categoria: #{@categoria}\n}
-    end
-      
-    def eql?(outro_carro)
-      @id == outro_carro.id
-    end
-      
-    def hash
-      @id.hash
-    end
+	# todos os métodos de instância são
+	# incluídos nos objetos Carro
+
+	extend FormatadorMoeda
+  def initialize(id, marca, modelo, cor, ano, preco, categoria)
+    super()
+    @id = id
+    @marca = marca
+    @modelo = modelo
+    @cor = cor
+    @ano = ano
+    @preco = preco
+    @categoria = categoria
+  end
+  def to_s
+    %Q{CARRO -> Modelo: #{@modelo}, Cor: #{@cor}, Ano: #{@ano}, Preco: #{@preco}, Categoria: #{@categoria}\n}
+  end
+    
+  def eql?(outro_carro)
+    @id == outro_carro.id
+  end
+    
+  def hash
+    @id.hash
+  end
 end
 
 class Moto < Veiculo
-    def initialize(id, marca, modelo, cor, ano, preco, categoria)
-      super()
-      @id = id
-      @marca = marca
-      @modelo = modelo
-      @cor = cor
-      @ano = ano
-      @preco = preco
-      @categoria = categoria
-    end
+	attr_reader :modelo
+	include FormatadorMoeda
+  formata_moeda :preco, :preco_com_desconto,
+
+  def initialize(id, marca, modelo, cor, ano, preco, categoria)
+    super()
+    @id = id
+    @marca = marca
+    @modelo = modelo
+    @cor = cor
+    @ano = ano
+    @preco = preco
+    @categoria = categoria
+  end
+
+  def to_s
+    %Q{MOTO -> Modelo: #{@modelo}, Cor: #{@cor}, Ano: #{@ano}, Preco: #{@preco}, Categoria: #{@categoria}\n}
+  end
   
-    def to_s
-      %Q{MOTO -> Marca: #{@marca}, Modelo: #{@modelo}, Preço: #{@preco}, Categoria: #{@categoria} }
-    end
-    
-    def hash
-      @id.hash
-    end
 end
 
 class Bike < Veiculo
-  def initialize(modelo, cor, preco, categoria)
+	extend FormatadorMoeda
+  def initialize(id, modelo, cor, preco, categoria)
     super()
+		@id = id
     @modelo = modelo
     @cor = cor
     @preco = preco
@@ -80,6 +92,32 @@ class Bike < Veiculo
   def to_s
     %Q{BIKE -> Modelo: #{@modelo}, Cor: #{@cor}, Preco: R$#{@preco}, Categoria: #{@categoria}}
   end
+end
+
+class Pneu
+	@id = 0
+
+	def self.id
+		@id += 1
+	end
+	
+	def initialize(marca, dimensao)
+		@id = self.class.id
+		@marca = marca
+		@dimensao = dimensao
+	end
+
+	def id
+		@id
+	end
+
+	def marca
+		"Marca: #{@marca}"
+	end
+
+	def to_s
+		%Q{Marca: #{@marca}, Dimensão: #{@dimensao}}
+	end
 end
 
 require "yaml"
@@ -100,14 +138,17 @@ end
 
 module VendaFacil
   class Set
+		include Enumerable
+
     def initialize
+			@veiculos = ::Array.new
       @arquivos = BancoDeArquivos.new 
     end
       
     def adiciona(veiculo)
-      salva veiculo do
+      salva(veiculo) do
         veiculos << veiculo
-      end
+      end if veiculo.kind_of? Veiculo #-> O método kind_of? retorna true se o objeto for um tipo ou subtipo da constante passado como argumento
     end
       
     def veiculos
@@ -115,8 +156,14 @@ module VendaFacil
     end
       
     def veiculos_por_categoria(categoria)
-      veiculos.select {|veiculo| veiculo.categoria == categoria}
+      veiculos.select do |veiculo| 
+				veiculo.categoria == categoria if veiculo.respond_to? :categoria # Retorna true se o objeto(veiculo) responder ao método dado(:categoria)
+			end
     end
+
+		def each
+			veiculos.each{|veiculo| yield veiculo}
+		end
     
     private
     def salva(veiculo)

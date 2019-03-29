@@ -6,6 +6,7 @@ class BancoDeArquivos
 			arquivo.puts ""
 		end
 	end
+	
 	def carrega
 		$/ = "\n\n"
 		File.open("veiculos.yml", "r").map do |livro_serializado|
