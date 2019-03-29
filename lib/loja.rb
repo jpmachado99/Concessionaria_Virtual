@@ -1,16 +1,16 @@
 module VendaFacil
   class Set
-		include Enumerable
+    include Enumerable
 
     def initialize
-			@veiculos = ::Array.new
+      @veiculos = ::Array.new
       @arquivos = BancoDeArquivos.new 
     end
       
     def adiciona(veiculo)
       salva(veiculo) do
         veiculos << veiculo
-      end if veiculo.kind_of? Veiculo #-> O mÈtodo kind_of? retorna true se o objeto for um tipo ou subtipo da constante passado como argumento
+      end if veiculo.kind_of? Veiculo #-> O m√©todo kind_of? retorna true se o objeto for um tipo ou subtipo da constante passado como argumento
     end
       
     def veiculos
@@ -19,13 +19,13 @@ module VendaFacil
       
     def veiculos_por_categoria(categoria)
       veiculos.select do |veiculo| 
-				veiculo.categoria == categoria if veiculo.respond_to? :categoria # Retorna true se o objeto(veiculo) responder ao mÈtodo dado(:categoria)
-			end
+	veiculo.categoria == categoria if veiculo.respond_to? :categoria # Retorna true se o objeto(veiculo) responder ao m√©todo dado(:categoria)
+      end
     end
 
-		def each
-			veiculos.each{|veiculo| yield veiculo}
-		end
+    def each
+      veiculos.each{|veiculo| yield veiculo}
+    end
     
     private
     def salva(veiculo)
