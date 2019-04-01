@@ -1,25 +1,31 @@
 class Pneu
+	attr_reader :marca, :id
+	attr_accessor :preco
+
 	@id = 0
 
-	def self.id
-		@id += 1
-	end
-	
-	def initialize(marca, dimensao)
-		@id = self.class.id
+	def initialize(marca, preco)
 		@marca = marca
-		@dimensao = dimensao
+		@preco = preco
+		@id = self.class.next_id
 	end
 
-	def id
-		@id
+	def save
+		File.open("db/pneus/#{@id}.yml", "w") { |file| file.puts serialize}
 	end
 
-	def marca
-		"Marca: #{@marca}"
+	def self.find(id)
+		raise DocumentNotFound, "Arquivo db/pneus/#{id}.yml não encontrado.", caller unless File.exists?("db/pneus/#{id}.yml")
+
+		YAML.load File.open("db/pneus/#{id}.yml", "r")
 	end
 
-	def to_s
-		%Q{Marca: #{@marca}, Dimensão: #{@dimensao}}
+	private
+	def serialize
+		YAML.dump self
+	end
+
+	def self.next_id
+		Dir.glob("db/pneus/*.yml").size + 1
 	end
 end

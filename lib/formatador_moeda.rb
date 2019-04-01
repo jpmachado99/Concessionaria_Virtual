@@ -1,3 +1,8 @@
+# adicionado o caractere * antes
+# do nome do argumento
+# define que este argumento recebe N valores
+# separados por vírgula
+
 module FormatadorMoeda
   def self.formata_moeda(*vars_met)
     vars_met.each do |name|
