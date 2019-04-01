@@ -1,7 +1,5 @@
 class Moto < Veiculo
-	attr_reader :modelo
-	include FormatadorMoeda
-  formata_moeda :preco, :preco_com_desconto,
+	attr_reader :marca
 
   def initialize(id, marca, modelo, cor, ano, preco, categoria)
     super()
@@ -17,5 +15,5 @@ class Moto < Veiculo
   def to_s
     %Q{MOTO -> Modelo: #{@modelo}, Cor: #{@cor}, Ano: #{@ano}, Preco: #{@preco}, Categoria: #{@categoria}\n}
   end
-  
+
 end

@@ -1,5 +1,5 @@
 class Bike < Veiculo
-	extend FormatadorMoeda
+
   def initialize(id, modelo, cor, preco, categoria)
     super()
 		@id = id
@@ -12,4 +12,5 @@ class Bike < Veiculo
   def to_s
     %Q{BIKE -> Modelo: #{@modelo}, Cor: #{@cor}, Preco: R$#{@preco}, Categoria: #{@categoria}}
   end
+
 end

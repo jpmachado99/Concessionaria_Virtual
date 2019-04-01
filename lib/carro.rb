@@ -2,7 +2,6 @@ class Carro < Veiculo
 	# todos os métodos de instância são
 	# incluídos nos objetos Carro
 
-	extend FormatadorMoeda
   def initialize(id, marca, modelo, cor, ano, preco, categoria)
     super()
     @id = id
@@ -24,4 +23,5 @@ class Carro < Veiculo
   def hash
     @id.hash
   end
+
 end

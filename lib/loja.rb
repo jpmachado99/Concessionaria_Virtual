@@ -10,7 +10,7 @@ module VendaFacil
     def adiciona(veiculo)
       salva(veiculo) do
         veiculos << veiculo
-      end if veiculo.kind_of? Veiculo #-> O mÃ©todo kind_of? retorna true se o objeto for um tipo ou subtipo da constante passado como argumento
+      end if veiculo.kind_of? Veiculo #-> O método kind_of? retorna true se o objeto for um tipo ou subtipo da constante passado como argumento
     end
       
     def veiculos
@@ -19,7 +19,7 @@ module VendaFacil
       
     def veiculos_por_categoria(categoria)
       veiculos.select do |veiculo| 
-	veiculo.categoria == categoria if veiculo.respond_to? :categoria # Retorna true se o objeto(veiculo) responder ao mÃ©todo dado(:categoria)
+	      veiculo.categoria == categoria if veiculo.respond_to? :categoria # Retorna true se o objeto(veiculo) responder ao método dado(:categoria)
       end
     end
 
