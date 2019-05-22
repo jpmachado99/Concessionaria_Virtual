@@ -1,3 +1,4 @@
+# encoding: Windows-1252
 class Veiculo
   attr_accessor :preco
   attr_reader :categoria, :marca

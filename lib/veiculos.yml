@@ -1,0 +1,29 @@
+
+--- !ruby/object:Carro
+desconto: 0.1
+id: '1'
+marca: Fiat
+modelo: Tempra
+cor: Azul
+ano: 2002
+preco: 5000
+categoria: :hatch
+
+--- !ruby/object:Moto
+desconto: 0.1
+id: '1'
+marca: Honda
+modelo: Hornet
+cor: Fuscia
+ano: 2017
+preco: 30000
+categoria: :sport
+
+--- !ruby/object:Bike
+desconto: 0.1
+id: '1'
+modelo: Caloi 100
+cor: Cinza
+preco: 500
+categoria: :urbana
+

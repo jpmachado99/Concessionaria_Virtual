@@ -1,3 +1,4 @@
+# encoding: Windows-1252
 class Relatorio
   def initialize(loja)
     @loja = loja
@@ -6,7 +7,7 @@ class Relatorio
   def total
     soma = 0.0
   
-    @loja.veiculos.map(&:preco).inject(:+)
+    "Preço de todos os veículos: R$#{@loja.veiculos.map(&:preco).inject(:+)}"
   end
   
   def marcas

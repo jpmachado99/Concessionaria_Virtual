@@ -1,3 +1,5 @@
+# encoding: Windows-1252
+require "yaml"
 class Pneu
 	attr_reader :marca, :id
 	attr_accessor :preco
@@ -11,13 +13,13 @@ class Pneu
 	end
 
 	def save
-		File.open("db/pneus/#{@id}.yml", "w") { |file| file.puts serialize}
+		File.open("veiculos.yml", "w") { |file| file.puts serialize}
 	end
 
 	def self.find(id)
-		raise DocumentNotFound, "Arquivo db/pneus/#{id}.yml não encontrado.", caller unless File.exists?("db/pneus/#{id}.yml")
+		raise DocumentNotFound, "Arquivo veiculo.yml não encontrado.", caller unless File.exists?("veiculos.yml")
 
-		YAML.load File.open("db/pneus/#{id}.yml", "r")
+		YAML.load File.open("veiculos.yml", "r")
 	end
 
 	private
@@ -26,6 +28,6 @@ class Pneu
 	end
 
 	def self.next_id
-		Dir.glob("db/pneus/*.yml").size + 1
+		Dir.glob("veiculos.yml").size + 1
 	end
 end

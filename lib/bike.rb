@@ -1,3 +1,4 @@
+# encoding: Windows-1252
 class Bike < Veiculo
 
   def initialize(id, modelo, cor, preco, categoria)

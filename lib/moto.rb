@@ -1,3 +1,4 @@
+# encoding: Windows-1252
 class Moto < Veiculo
 	attr_reader :marca
 

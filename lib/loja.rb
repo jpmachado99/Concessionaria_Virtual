@@ -1,3 +1,4 @@
+# encoding: Windows-1252
 module VendaFacil
   class Set
     include Enumerable
