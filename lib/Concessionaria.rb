@@ -11,5 +11,5 @@ load "pneu.rb"
 load "formatador_moeda.rb"
 
 loja = VendaFacil::Set.new
-
-loja.preco_com_desconto
+loja.adiciona Carro.new("2", "Volks", "Gol", "Preto", 2017, 30000, :hatch)
+puts loja.veiculos 

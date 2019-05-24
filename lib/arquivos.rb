@@ -4,7 +4,6 @@ class BancoDeArquivos
 		File.open("veiculos.yml", "a") do |arquivo|
 			arquivo.puts YAML.dump(veiculo)
 			arquivo.puts ""
-			arquivo.close unless file.closed?
 		end
 	end
 	

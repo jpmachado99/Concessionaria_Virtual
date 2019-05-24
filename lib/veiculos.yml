@@ -25,5 +25,13 @@ id: '1'
 modelo: Caloi 100
 cor: Cinza
 preco: 500
-categoria: :urbana
+categoria: :urbana--- !ruby/object:Carro
+desconto: 0.1
+id: '2'
+marca: Volks
+modelo: Gol
+cor: Preto
+ano: 2017
+preco: 30000
+categoria: :hatch
 
